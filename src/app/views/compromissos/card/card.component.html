@@ -1,0 +1,46 @@
+<div class="card border-dark mt-5">
+  <div class="card-header text-bg-dark">
+    <div class="col">
+      <div class="row">
+        <h3 class="card-title">{{ contato.nome }}</h3>
+      </div>
+      <div class="row">
+        <span class="ms-auto fw-semibold">Telefone: {{ contato.telefone }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="d-flex align-items-center">
+      <div class="col">
+        <div class="row mt-4">
+          <span class="ms-auto fw-semibold text-muted">Cargo: {{ contato.cargo }}</span>
+          <span class="ms-auto fw-semibold text-muted">Empresa: {{ contato.empresa }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- <p class="">Id: {{contato.id}}</p>  -->
+  </div>
+  <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
+    <button
+      class="btn btn-outline-info"
+      routerLink="/contatos/editar/{{contato.id}}"
+      aria-label="Editar"
+      ngbTooltip="Editar"
+      placement="bottom">
+
+      <i class="bi bi-pen"></i>
+      
+    </button>
+
+    <button
+      class="btn btn-outline-danger"
+      routerLink="/contatos/excluir/{{contato.id}}"
+      aria-label="Excluir"
+      ngbTooltip="Excluir"
+      placement="bottom">
+
+      <i class="bi bi-trash"></i>
+
+    </button>
+  </div>
+</div>
