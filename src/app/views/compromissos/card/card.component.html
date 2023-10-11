@@ -2,10 +2,10 @@
   <div class="card-header text-bg-dark">
     <div class="col">
       <div class="row">
-        <h3 class="card-title">{{ contato.nome }}</h3>
+        <h3 class="card-title">{{ compromisso.assunto }}</h3>
       </div>
       <div class="row">
-        <span class="ms-auto fw-semibold">Telefone: {{ contato.telefone }}</span>
+        <span class="ms-auto fw-semibold">Telefone: {{ compromisso.assunto }}</span>
       </div>
     </div>
   </div>
@@ -13,8 +13,8 @@
     <div class="d-flex align-items-center">
       <div class="col">
         <div class="row mt-4">
-          <span class="ms-auto fw-semibold text-muted">Cargo: {{ contato.cargo }}</span>
-          <span class="ms-auto fw-semibold text-muted">Empresa: {{ contato.empresa }}</span>
+          <span class="ms-auto fw-semibold text-muted">Cargo: {{ compromisso.assunto }}</span>
+          <span class="ms-auto fw-semibold text-muted">Empresa: {{ compromisso.assunto }}</span>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
   <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
     <button
       class="btn btn-outline-info"
-      routerLink="/contatos/editar/{{contato.id}}"
+      routerLink="/contatos/editar/{{compromisso.id}}"
       aria-label="Editar"
       ngbTooltip="Editar"
       placement="bottom">
@@ -34,7 +34,7 @@
 
     <button
       class="btn btn-outline-danger"
-      routerLink="/contatos/excluir/{{contato.id}}"
+      routerLink="/contatos/excluir/{{compromisso.id}}"
       aria-label="Excluir"
       ngbTooltip="Excluir"
       placement="bottom">

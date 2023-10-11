@@ -1,24 +1,23 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from "rxjs";
-
-import { ListarFormsContatoViewModel } from "../models/listar-contato.view-model";
 import { environment } from "src/environments/environment";
-import { FormsContatoViewModel } from "../models/forms-contato.view-model";
+import { FormCompromissoViewModel } from "../models/forms-compromisso.view-model";
+import { ListarCompromissoViewModel } from "../models/listar-compromisso.view-model";
 
 @Injectable()
 
-export class ContatosService{
-  private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/contatos/'
+export class CompromissoService{
+  private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/compromissos/'
 
   constructor(private http: HttpClient){}
 
-  public inserir(contato: any): Observable<FormsContatoViewModel>{
-    return this.http.post<any>(this.endpoint, contato, this.obterHeadersAutorizacao());
+  public inserir(compromisso: any): Observable<FormCompromissoViewModel>{
+    return this.http.post<any>(this.endpoint, compromisso, this.obterHeadersAutorizacao());
   }
 
-  public editar(id: string, contato: FormsContatoViewModel){
-    return this.http.put<any>(this.endpoint + id, contato, this.obterHeadersAutorizacao())
+  public editar(id: string, compromisso: FormCompromissoViewModel): Observable<FormCompromissoViewModel>{
+    return this.http.put<any>(this.endpoint + id, compromisso, this.obterHeadersAutorizacao())
       .pipe(
         map((res) => res.dados)
       );
@@ -39,7 +38,7 @@ export class ContatosService{
     };
   }
 
-  public selecionarTodos(): Observable<ListarFormsContatoViewModel[]>{
+  public selecionarTodos(): Observable<ListarCompromissoViewModel[]>{
     return this.http
       .get<any>(this.endpoint, this.obterHeadersAutorizacao())
       .pipe(
@@ -47,7 +46,7 @@ export class ContatosService{
       );
   }
 
-  public selecionarPorId(id: string): Observable<FormsContatoViewModel>{
+  public selecionarPorId(id: string): Observable<FormCompromissoViewModel>{
     return this.http
     .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
     .pipe(
@@ -55,7 +54,7 @@ export class ContatosService{
     );
   }
 
-  public selecionarContatoCompletoPorId(id: string){
+  public selecionarCompromissoCompletoPorId(id: string){
     return this.http
     .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
     .pipe(

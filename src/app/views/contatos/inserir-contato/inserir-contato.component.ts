@@ -29,10 +29,6 @@ export class InserirContatoComponent implements OnInit{
   campoEstaInvalido(campo: string): boolean{
     const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
 
-    // if(estaInvalido){
-    //   this.listaErro.push(msg!);
-    // }
-
     return estaInvalido;
   }
 

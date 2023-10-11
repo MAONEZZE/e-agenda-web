@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ListarCompromissoViewModel } from '../models/listar-compromisso.view-model';
 
 @Component({
   selector: 'app-card',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./card.component.css']
 })
 export class CardComponent {
+  @Input() compromisso: ListarCompromissoViewModel;
 
+  constructor(){
+    this.compromisso = new ListarCompromissoViewModel('','','','','','');
+  }
 }
