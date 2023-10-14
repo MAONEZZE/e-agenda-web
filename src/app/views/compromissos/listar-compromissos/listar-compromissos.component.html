@@ -11,8 +11,7 @@
       <!-- Barra de Ações -->
       <div class="d-grid d-md-flex gap-1 mt-5">
         <a
-          [routerLink]="['/compromissos/inserir']"
-          role="button"
+          [routerLink]="['/compromissos/inserir']"  
           class="btn btn-primary me-md-1">
           <i class="pi bi-plus-circle me-2"></i>
           Novo Compromisso
@@ -20,8 +19,10 @@
       </div>
 
       <!-- Listagem de Registros -->
-      <div class="mt-3" *ngFor="let compromisso of compromissos">
-        <app-card [compromisso]="compromisso"></app-card>
+      <div class="row g-3 justify-content-center">
+        <div class="col-5" *ngFor="let compromisso of compromissos">
+          <app-card [compromisso]="compromisso"></app-card>
+        </div>
       </div>
     </div>
   </div>

@@ -5,17 +5,18 @@
         <h3 class="card-title">{{ compromisso.assunto }}</h3>
       </div>
       <div class="row">
-        <span class="ms-auto fw-semibold">Telefone: {{ compromisso.assunto }}</span>
+        <span class="ms-auto fw-semibold">Data: {{ compromisso.data }}</span>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <div class="d-flex align-items-center">
-      <div class="col">
-        <div class="row mt-4">
-          <span class="ms-auto fw-semibold text-muted">Cargo: {{ compromisso.assunto }}</span>
-          <span class="ms-auto fw-semibold text-muted">Empresa: {{ compromisso.assunto }}</span>
-        </div>
+    <!-- <span class="ms-auto fw-semibold text-muted">Inicio: {{ compromisso.horaInicio }} ---</span> -->
+    <div class="d-flex">
+      <div class="col-5">
+        <span class="ms-auto fw-semibold text-muted">Inicio: {{ compromisso.horaInicio }}</span>
+      </div>
+      <div class="col-5">
+        <span class="ms-auto fw-semibold text-muted">Termino: {{ compromisso.horaTermino }}</span>
       </div>
     </div>
     <!-- <p class="">Id: {{contato.id}}</p>  -->
@@ -23,7 +24,7 @@
   <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
     <button
       class="btn btn-outline-info"
-      routerLink="/contatos/editar/{{compromisso.id}}"
+      routerLink="/compromissos/editar/{{compromisso.id}}"
       aria-label="Editar"
       ngbTooltip="Editar"
       placement="bottom">
@@ -34,7 +35,7 @@
 
     <button
       class="btn btn-outline-danger"
-      routerLink="/contatos/excluir/{{compromisso.id}}"
+      routerLink="/compromissos/excluir/{{compromisso.id}}"
       aria-label="Excluir"
       ngbTooltip="Excluir"
       placement="bottom">

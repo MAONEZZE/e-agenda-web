@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Inject, NgModule, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { InserirContatoComponent } from './views/contatos/inserir-contato/inserir-contato.component';
 import { ListarContatosComponent } from './views/contatos/listar-contatos/listar-contatos.component';
@@ -9,6 +9,10 @@ import { InserirCompromissoComponent } from './views/compromissos/inserir-compro
 import { EditarCompromissoComponent } from './views/compromissos/editar-compromisso/editar-compromisso.component';
 import { ExcluirCompromissoComponent } from './views/compromissos/excluir-compromisso/excluir-compromisso.component';
 import { ListarCompromissosComponent } from './views/compromissos/listar-compromissos/listar-compromissos.component';
+import { FormsContatoViewModel } from './views/contatos/models/forms-contato.view-model';
+import { ContatosService } from './views/contatos/services/contatos.service';
+import { VisualizarContatoViewModel } from './views/contatos/models/visualizar-contato.view-model';
+import { ListarContatoViewModel } from './views/contatos/models/listar-contato.view-model';
 
 const routes: Routes = [
   {
@@ -17,42 +21,26 @@ const routes: Routes = [
     pathMatch:'full'
   },
   {
-    path:'dashboard',
+    path: 'dashboard',
     component: DashboardComponent
   },
   {
-    path:'contatos/inserir',
-    component: InserirContatoComponent
+    path: 'contatos', //As rotas que tiverem essa palavra na rota, serão direcionadas pra cá
+    loadChildren: () => import('./views/contatos/contatos.module').then((modulo) => modulo.ContatosModule)
+    //Aqui ele vai importar o modulo e usar as respectivas rotas do modulo
   },
   {
-    path: 'contatos/editar/:id',
-    component: EditarContatoComponent
+    path:'compromissos',
+    loadChildren: () => import('./views/compromissos/compromissos.module').then((modulo) => modulo.CompromissosModule)
   },
   {
-    path: 'contatos/excluir/:id',
-    component: ExcluirContatoComponent
+    path: 'categorias',
+    loadChildren: () => import('./views/categoria/categoria.module').then((modulo) => modulo.CategoriaModule)
   },
   {
-    path:'contatos/listar',
-    component: ListarContatosComponent
-  },
-  {
-    path:'compromissos/inserir',
-    component: InserirCompromissoComponent
-  },
-  {
-    path: 'compromissos/editar/:id',
-    component: EditarCompromissoComponent
-  },
-  {
-    path: 'compromissos/excluir/:id',
-    component: ExcluirCompromissoComponent
-  },
-  {
-    path:'compromissos/listar',
-    component: ListarCompromissosComponent
-  },
-
+    path: 'despesas',
+    loadChildren: () => import('./views/despesas/despesas.module').then((modulo) => modulo.DespesasModule)
+  }
 ];
 
 @NgModule({

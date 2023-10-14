@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ContatosService } from '../../contatos/services/contatos.service';
 import { FormCompromissoViewModel } from '../models/forms-compromisso.view-model';
 import { CompromissoService } from '../services/compromissos.service';
-import { ListarFormsContatoViewModel } from '../../contatos/models/listar-contato.view-model';
+import { ListarContatoViewModel } from '../../contatos/models/listar-contato.view-model';
 
 @Component({
   selector: 'app-inserir-compromisso',
@@ -15,24 +15,29 @@ import { ListarFormsContatoViewModel } from '../../contatos/models/listar-contat
 })
 export class InserirCompromissoComponent implements OnInit{
   form!: FormGroup;
-  contatos: ListarFormsContatoViewModel[] = [];
+  contatos: ListarContatoViewModel[] = [];
   compromissoVM!: FormCompromissoViewModel;
   
-  constructor(private contatoService: ContatosService, private formBuilder: FormBuilder, private compromissoService: CompromissoService, private router: Router, private toastService: ToastrService){}
+  constructor(
+    private contatoService: ContatosService, 
+    private formBuilder: FormBuilder, 
+    private compromissoService: CompromissoService, 
+    private router: Router, 
+    private toastService: ToastrService){}
   
   ngOnInit(): void {
-    this.carregarContatos();
-
     this.form = this.formBuilder.group({
-      assunto: new FormControl('', [Validators.required]),
+      assunto: new FormControl('', [Validators.required, Validators.minLength(3)]),
       local: new FormControl('', [Validators.required]),
-      tipoLocal: new FormControl('', [Validators.required]),
-      link: new FormControl('', [Validators.required]),
-      data: new FormControl('', [Validators.required]),
+      tipoLocal: new FormControl(''),
+      link: new FormControl(''),
+      data: new FormControl(new Date(), [Validators.required]),
       horaInicio: new FormControl('', [Validators.required]),
       horaTermino: new FormControl('', [Validators.required]),
-      contatoId: new FormControl('', [Validators.required]),
+      contatoId: new FormControl(''),
     });
+
+    this.carregarContatos();
   }
 
   carregarContatos(){
@@ -49,27 +54,8 @@ export class InserirCompromissoComponent implements OnInit{
 
   gravar(){
     if(this.form.invalid){
-      const camposParaValidar = [
-        { campo: 'assunto', mensagem: '* O assunto é obrigatório'},
-        { campo: 'local', mensagem: '* O local é obrigatório'},
-        { campo: 'tipoLocal', mensagem: '* O tipo do local é obrigatório'},
-        { campo: 'link', mensagem: '* O link é obrigatório'},
-        { campo: 'data', mensagem: '* A data é obrigatório'},
-        { campo: 'horaInicio', mensagem: '* O horário inicial é obrigatório'},
-        { campo: 'horaTermino', mensagem: '* O horário de termino é obrigatório'},
-        { campo: 'contatoId', mensagem: '* O campo da empresa é obrigatório'},
-      ]
-
-      const erros: string[] = [];
-
-      for(let item of camposParaValidar){
-        if(this.form.get(item.campo)?.invalid){
-          erros.push(item.mensagem);
-        }
-      }
-
-      for(let item of erros){
-        this.toastService.error(item, 'Erro no envio do Formulário');
+      for(let item of this.form.validate()){
+        this.toastService.error(item)
       }
 
       return;
@@ -77,8 +63,18 @@ export class InserirCompromissoComponent implements OnInit{
 
     this.compromissoVM = this.form.value;
 
-    this.compromissoService.inserir(this.compromissoVM).subscribe((res) => {
-      this.router.navigate(['/compromissos', 'listar'])
+    this.compromissoService.inserir(this.compromissoVM).subscribe({
+      next: (compromisso: FormCompromissoViewModel) => this.processarSucesso(compromisso),
+      error: (err: Error) => this.processarFalha(err)
     });
+  }
+
+  processarSucesso(compromisso: FormCompromissoViewModel){
+    this.toastService.success(`O compromisso ${compromisso.assunto} foi cadastrado com sucesso!`, 'Sucesso');
+    this.router.navigate(['/compromissos/listar']);
+  }
+
+  processarFalha(error: Error){
+    this.toastService.error(error.message, 'Error');
   }
 }

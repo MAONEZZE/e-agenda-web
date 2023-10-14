@@ -26,8 +26,6 @@ import { CompromissosModule } from './views/compromissos/compromissos.module';
     HttpClientModule,
     CoreModule,
     DashboardModule,
-    ContatosModule,
-    CompromissosModule,
 
     ToastrModule.forRoot({
       timeOut:5000,

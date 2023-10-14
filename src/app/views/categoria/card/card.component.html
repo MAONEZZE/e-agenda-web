@@ -1,0 +1,31 @@
+<div class="card border-dark mt-5">
+  <div class="col">
+    <div class="row">
+      <h3 class="card-title">{{ categoria.titulo }}</h3>
+    </div>
+  </div>
+  <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
+    <button
+      class="btn btn-outline-info"
+      routerLink="/categorias/editar/{{categoria.id}}"
+      aria-label="Editar"
+      ngbTooltip="Editar"
+      placement="bottom">
+
+      <i class="bi bi-pen"></i>
+      
+    </button>
+
+    <button
+      class="btn btn-outline-danger"
+      routerLink="/categorias/excluir/{{categoria.id}}"
+      aria-label="Excluir"
+      ngbTooltip="Excluir"
+      placement="bottom">
+
+      <i class="bi bi-trash"></i>
+
+    </button>
+  </div>
+</div>
+

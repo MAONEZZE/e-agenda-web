@@ -14,7 +14,11 @@ export class InserirContatoComponent implements OnInit{
   form!: FormGroup;
   contatoVM!: FormsContatoViewModel;
 
-  constructor(private formBuilder: FormBuilder, private contatoService: ContatosService, private router: Router, private toastService: ToastrService){}
+  constructor(
+    private formBuilder: FormBuilder, 
+    private contatoService: ContatosService, 
+    private router: Router, 
+    private toastService: ToastrService){}
   
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -38,38 +42,28 @@ export class InserirContatoComponent implements OnInit{
 
   gravar(){
     if(this.form.invalid){
-      const camposParaValidar = [
-        { campo: 'nome', mensagem: '* O nome é obrigatório'},
-        { campo: 'email', mensagem: '* O email é obrigatório'},
-        { campo: 'telefone', mensagem: '* O telefone é obrigatório'},
-        { campo: 'cargo', mensagem: '* O cargo é obrigatório'},
-        { campo: 'empresa', mensagem: '* O campo da empresa é obrigatório'},
-      ]
-
-      const erros: string[] = [];
-
-      for(let item of camposParaValidar){
-        if(this.form.get(item.campo)?.invalid){
-          erros.push(item.mensagem);
-        }
-
-        if(this.form.get('email')?.errors?.['email']){
-          erros.push('Digite um email valido')
-        }
-      }
-
-      for(let item of erros){
-        this.toastService.error(item, 'Erro no envio do Formulário');
+      for(let item of this.form.validate()){
+        this.toastService.error(item);
       }
 
       return;
     }
     
     this.contatoVM = this.form.value;
-
-    this.contatoService.inserir(this.contatoVM).subscribe((res) => {
-      this.router.navigate(['/contatos/listar'])
+    
+    this.contatoService.inserir(this.contatoVM).subscribe({
+      next: (contato: FormsContatoViewModel) => this.processarSucesso(contato),
+      error: (error: Error) => this.processarFalha(error),
     });
     
+  }
+
+  processarSucesso(contato: FormsContatoViewModel){
+    this.toastService.success(`O contato ${contato.nome} foi cadastrado com sucesso!`, 'Sucesso');
+    this.router.navigate(['/contatos/listar']);
+  }
+
+  processarFalha(error: Error){
+    this.toastService.error(error.message, 'Error');
   }
 }

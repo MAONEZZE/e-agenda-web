@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from "rxjs";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from "rxjs";
 
-import { ListarFormsContatoViewModel } from "../models/listar-contato.view-model";
+import { ListarContatoViewModel } from "../models/listar-contato.view-model";
 import { environment } from "src/environments/environment";
 import { FormsContatoViewModel } from "../models/forms-contato.view-model";
 
@@ -13,19 +13,19 @@ export class ContatosService{
 
   constructor(private http: HttpClient){}
 
-  public inserir(contato: any): Observable<FormsContatoViewModel>{
-    return this.http.post<any>(this.endpoint, contato, this.obterHeadersAutorizacao());
-  }
+  private processarErroHttp(error: HttpErrorResponse){
+    let msgErro = '';
 
-  public editar(id: string, contato: FormsContatoViewModel){
-    return this.http.put<any>(this.endpoint + id, contato, this.obterHeadersAutorizacao())
-      .pipe(
-        map((res) => res.dados)
-      );
-  }
-
-  public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao());
+    if(error.status == 401){
+      msgErro = 'O usuário não está autorizado. Faça o o login e tente novamente.'
+    }
+    else if(error.status == 0){
+      msgErro = 'Ocorreu um erro ao processar a requisição.'
+    }
+    else{
+      msgErro = error.error?.erros[0]
+    }
+    return throwError(() => new Error(msgErro))
   }
 
   private obterHeadersAutorizacao() {
@@ -39,11 +39,36 @@ export class ContatosService{
     };
   }
 
-  public selecionarTodos(): Observable<ListarFormsContatoViewModel[]>{
+  public inserir(contato: any): Observable<FormsContatoViewModel>{
+    return this.http
+      .post<any>(this.endpoint, contato, this.obterHeadersAutorizacao())
+      .pipe(
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
+  public editar(id: string, contato: FormsContatoViewModel){
+    return this.http.put<any>(this.endpoint + id, contato, this.obterHeadersAutorizacao())
+      .pipe(
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
+  public excluir(id: string): Observable<any>{
+    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+      .pipe(
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
+  public selecionarTodos(): Observable<ListarContatoViewModel[]>{
     return this.http
       .get<any>(this.endpoint, this.obterHeadersAutorizacao())
       .pipe(
-        map((res) => res.dados)
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
   }
 
@@ -51,7 +76,8 @@ export class ContatosService{
     return this.http
     .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
     .pipe(
-      map((res) => res.dados)
+      map((res) => res.dados),
+      catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
     );
   }
 
@@ -59,7 +85,8 @@ export class ContatosService{
     return this.http
     .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
     .pipe(
-      map((res) => res.dados)
+      map((res) => res.dados),
+      catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
     );
   }
 }

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { VisualizarContatoViewModel } from '../models/visualizar-contato.view-model';
-import { ListarFormsContatoViewModel } from '../models/listar-contato.view-model';
+import { ListarContatoViewModel } from '../models/listar-contato.view-model';
 
 @Component({
   selector: 'app-card',
@@ -8,9 +7,9 @@ import { ListarFormsContatoViewModel } from '../models/listar-contato.view-model
   styleUrls: ['./card.component.css']
 })
 export class CardComponent {
-  @Input() contato: ListarFormsContatoViewModel;
+  @Input() contato: ListarContatoViewModel;
 
   constructor(){
-    this.contato = new ListarFormsContatoViewModel('','','','','')
+    this.contato = new ListarContatoViewModel('','','','','')
   }
 }

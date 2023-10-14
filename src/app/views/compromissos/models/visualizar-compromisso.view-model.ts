@@ -1,35 +1,14 @@
-import { ListarFormsContatoViewModel } from "../../contatos/models/listar-contato.view-model";
+import { ListarContatoViewModel } from "../../contatos/models/listar-contato.view-model";
+import { TipoLocalEnum } from "./tipo-local-compromisso.enum";
 
-export class VisualizarCompromissoViewModel{
+export type VisualizarCompromissoViewModel = {
   id: string;
   assunto: string;
   local: string;
-  tipoLocal: 0;
+  tipoLocal: TipoLocalEnum;
   link: string;
   data: Date;
   horaInicio: string;
   horaTermino: string;
-  contato: ListarFormsContatoViewModel;
-
-  constructor(
-    id: string, 
-    assunto: string, 
-    local: string, 
-    tipoLocal: 0, 
-    link: string, 
-    data: Date, 
-    horaInicio: string, 
-    horaTermino: string, 
-    contato: ListarFormsContatoViewModel
-    ){
-    this.id = id;
-    this.assunto = assunto;
-    this.local = local;    
-    this.tipoLocal = tipoLocal;
-    this.link = link;      
-    this.data = data;      
-    this.horaInicio = horaInicio;
-    this.horaTermino = horaTermino;
-    this.contato = contato;
-  }
+  contato?: ListarContatoViewModel
 }

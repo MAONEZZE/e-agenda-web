@@ -6,7 +6,7 @@
       </div>
 
       <form [formGroup]="form" (ngSubmit)="gravar()" class="mt-4">
-        {{ form.value | json}}
+        <!-- {{ form.value | json}} -->
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Assunto:</label>
           <input
@@ -41,6 +41,7 @@
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Link:</label>
           <input
+            formControlName="link"
             class="form-control"
             type="text"
             [ngClass]="campoEstaInvalido('link')? 'is-invalid' : ''"
@@ -50,6 +51,7 @@
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Local:</label>
           <input
+          formControlName="local"
             class="form-control"
             type="text"
             [ngClass]="campoEstaInvalido('local')? 'is-invalid' : ''"
@@ -59,6 +61,7 @@
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Data:</label>
           <input 
+            formControlName="data"
             class="form-control" 
             [ngClass]="campoEstaInvalido('data')? 'is-invalid' : ''"
             type="date" />
@@ -68,27 +71,29 @@
           <div class="col-6">
             <label class="form-label">Hora de Início:</label>
             <input
+              formControlName="horaInicio"
               class="form-control"
               type="time"
               [ngClass]="campoEstaInvalido('horaInicio')? 'is-invalid' : ''"
-              placeholder="Digite o telefone do contato"/>
+              placeholder="Digite a hora de inicio do compromisso"/>
           </div>
 
           <div class="col">
             <label class="form-label">Hora de Término:</label>
             <input
+              formControlName="horaTermino"
               class="form-control"
               type="time"
               [ngClass]="campoEstaInvalido('horaTermino')? 'is-invalid' : ''"
-              placeholder="Digite o telefone do contato"/>
+              placeholder="Digite o hora de termino do compromisso"/>
 
           </div>
         </div>
 
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Contato:</label>
-          <select class="form-select w-50" name="categoriaId">
-            <option *ngFor="let contato of contatos">{{ contato.nome }}</option>
+          <select formControlName="contatoId" class="form-select w-50">aaaaaa
+            <option *ngFor="let contato of contatos" [ngValue]="contato.id">{{ contato.nome }}</option>
           </select>
         </div>
 

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsContatoViewModel } from '../models/forms-contato.view-model';
 import { ContatosService } from '../services/contatos.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-editar-contato',
@@ -11,10 +12,15 @@ import { ContatosService } from '../services/contatos.service';
 })
 export class EditarContatoComponent {
   form!: FormGroup;
-  constatoVM!: FormsContatoViewModel;
-  idSelecionado: string | null = null;
+  contatoVM!: FormsContatoViewModel;
+  //idSelecionado: string | null = null;
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private contatoService: ContatosService, private router: Router){}
+  constructor(
+    private toastService: ToastrService, 
+    private route: ActivatedRoute, 
+    private formBuilder: FormBuilder, 
+    private contatoService: ContatosService, 
+    private router: Router){}
   
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -25,38 +31,42 @@ export class EditarContatoComponent {
       empresa: new FormControl('', [Validators.required]),
     });
 
-    // this.form.setValue({ O setValue tem que inicializar todos campos, ja o patchValue você pode inicializar só alguns
-    //   nome: 'Ruan',
-    //   email: 'ruansanchez@gmail.com',
-    //   telefone: '11 96357-4015',
-    //   cargo: 'aaaaa',
-    //   empresa: 'aaaaaaaa',
-    // }); 
+    this.contatoVM = this.route.snapshot.data['contato']; //Esse contato é aquele que está no routing module
 
-    this.idSelecionado = this.route.snapshot.paramMap.get('id');
-    
-    if(!this.idSelecionado){
-      return;
-    }
+    this.form.patchValue(this.contatoVM);
 
-    this.contatoService.selecionarPorId(this.idSelecionado! ).subscribe((res) => {
-      this.form.patchValue(res);
-    })
-  }
+    // this.form.setValue({}) O setValue tem que inicializar todos campos, ja o patchValue você pode inicializar só alguns
 
-  campoEstaInvalido(campo: string): boolean{
-    return this.form.get(campo)!.touched && this.form.get(campo)!.invalid;
-  }
-
-  get email() {
-    return this.form.get('email');
   }
   
   gravar(){
-    this.constatoVM = this.form.value;
+    if(this.form.invalid){
 
-    this.contatoService.editar(this.idSelecionado!, this.constatoVM).subscribe((res) => {
-      this.router.navigate(['/contatos/listar'])
+      for(let item of this.form.validate()){
+        this.toastService.error(item);
+      }
+    }
+
+    this.contatoVM = this.form.value;
+
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if(!id){
+      return;
+    }
+
+    this.contatoService.editar(id!, this.contatoVM).subscribe({
+      next: (contato: FormsContatoViewModel) => this.processarSucesso(contato),
+      error: (error: Error) => this.processarFalha(error)
     })
+  }
+
+  processarSucesso(contato: FormsContatoViewModel){
+    this.toastService.success(`O contato ${contato.nome} foi alterado com sucesso!`, 'Sucesso');
+    this.router.navigate(['/contatos/listar']);
+  }
+
+  processarFalha(error: Error){
+    this.toastService.error(error.message, 'Error');
   }
 }

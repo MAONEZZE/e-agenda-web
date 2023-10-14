@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
+import { Observable, catchError, map, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { FormCompromissoViewModel } from "../models/forms-compromisso.view-model";
 import { ListarCompromissoViewModel } from "../models/listar-compromisso.view-model";
@@ -12,19 +12,19 @@ export class CompromissoService{
 
   constructor(private http: HttpClient){}
 
-  public inserir(compromisso: any): Observable<FormCompromissoViewModel>{
-    return this.http.post<any>(this.endpoint, compromisso, this.obterHeadersAutorizacao());
-  }
+  private processarErroHttp(error: HttpErrorResponse){
+    let msgErro = '';
 
-  public editar(id: string, compromisso: FormCompromissoViewModel): Observable<FormCompromissoViewModel>{
-    return this.http.put<any>(this.endpoint + id, compromisso, this.obterHeadersAutorizacao())
-      .pipe(
-        map((res) => res.dados)
-      );
-  }
-
-  public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao());
+    if(error.status == 401){
+      msgErro = 'O usuário não está autorizado. Faça o o login e tente novamente.'
+    }
+    else if(error.status == 0){
+      msgErro = 'Ocorreu um erro ao processar a requisição.'
+    }
+    else{
+      msgErro = error.error?.erros[0]
+    }
+    return throwError(() => new Error(msgErro))
   }
 
   private obterHeadersAutorizacao() {
@@ -38,11 +38,35 @@ export class CompromissoService{
     };
   }
 
+  public inserir(compromisso: any): Observable<FormCompromissoViewModel>{
+    return this.http.post<any>(this.endpoint, compromisso, this.obterHeadersAutorizacao())
+      .pipe(
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
+  public editar(id: string, compromisso: FormCompromissoViewModel): Observable<FormCompromissoViewModel>{
+    return this.http.put<any>(this.endpoint + id, compromisso, this.obterHeadersAutorizacao())
+      .pipe(
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
+  public excluir(id: string): Observable<any>{
+    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+      .pipe(
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+  }
+
   public selecionarTodos(): Observable<ListarCompromissoViewModel[]>{
     return this.http
       .get<any>(this.endpoint, this.obterHeadersAutorizacao())
       .pipe(
-        map((res) => res.dados)
+        map((res) => res.dados),
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
   }
 
@@ -50,7 +74,8 @@ export class CompromissoService{
     return this.http
     .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
     .pipe(
-      map((res) => res.dados)
+      map((res) => res.dados),
+      catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
     );
   }
 
@@ -58,7 +83,8 @@ export class CompromissoService{
     return this.http
     .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
     .pipe(
-      map((res) => res.dados)
+      map((res) => res.dados),
+      catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
     );
   }
 }
