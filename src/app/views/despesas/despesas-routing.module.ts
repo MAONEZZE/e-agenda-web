@@ -30,15 +30,17 @@ const routes: Routes = [
   {
     path: 'listar',
     component: ListarDespesasComponent,
-    resolve: {}
+    resolve: { 'despesas': listarDespesasResolver }
   },
   {
     path: 'editar/:id',
     component: EditarDespesaComponent,
+    resolve: { 'despesa': formsDespesaResolver }
   },
   {
     path: 'excluir/:id',
     component: ExcluirDespesaComponent,
+    resolve: { 'despesa': visualizarDespesaResolver }
   },
   {
     path: 'inserir',

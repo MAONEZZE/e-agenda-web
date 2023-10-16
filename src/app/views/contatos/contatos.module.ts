@@ -9,8 +9,9 @@ import { ListarContatosComponent } from './listar-contatos/listar-contatos.compo
 import { EditarContatoComponent } from './editar-contato/editar-contato.component';
 import { ExcluirContatoComponent } from './excluir-contato/excluir-contato.component';
 import { CardComponent } from './card/card.component';
-import 'src/app/extensions/form-group.extensions'
 import { ContatosRoutingModule } from './contatos-routing.module';
+
+import 'src/app/extensions/form-group.extensions'
 
 @NgModule({
   declarations: [InserirContatoComponent, ListarContatosComponent, EditarContatoComponent, ExcluirContatoComponent, CardComponent],

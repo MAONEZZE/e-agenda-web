@@ -28,7 +28,7 @@ export class ExcluirCompromissoComponent implements OnInit{
     this.compromissoService.excluir(this.compromissoVM.id).subscribe({
       next: () => this.processarSucesso(),
       error: (err: Error) => this.processarFalha(err)
-    })
+    });
   }
 
   processarSucesso(){

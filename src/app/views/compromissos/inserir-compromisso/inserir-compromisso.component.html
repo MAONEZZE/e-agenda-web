@@ -92,9 +92,9 @@
 
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Contato:</label>
-          <select formControlName="contatoId" class="form-select w-50">aaaaaa
-            <option *ngFor="let contato of contatos" [ngValue]="contato.id">{{ contato.nome }}</option>
-          </select>
+          <ng-select formControlName="contatoId" [clearable]="false">
+            <ng-option *ngFor="let contato of contatos" [value]="contato.id">{{ contato.nome }}</ng-option>
+          </ng-select>
         </div>
 
         <div class="card-footer g-grid d-flex gap-1 mt-5">

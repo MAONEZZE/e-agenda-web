@@ -30,16 +30,6 @@ export class InserirContatoComponent implements OnInit{
     });
   }
 
-  campoEstaInvalido(campo: string): boolean{
-    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
-
-    return estaInvalido;
-  }
-
-  get email() {
-    return this.form.get('email');
-  }
-
   gravar(){
     if(this.form.invalid){
       for(let item of this.form.validate()){
