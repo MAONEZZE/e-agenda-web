@@ -26,6 +26,12 @@ export class InserirCategoriaComponent implements OnInit{
     });
   }
 
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
+  }
+
   gravar(){
     if(this.form.invalid){
       for(let item of this.form.validate()){

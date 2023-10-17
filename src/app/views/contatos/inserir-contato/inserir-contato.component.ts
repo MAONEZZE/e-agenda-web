@@ -29,6 +29,12 @@ export class InserirContatoComponent implements OnInit{
       empresa: new FormControl('', [Validators.required]),
     });
   }
+  
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
+  }
 
   gravar(){
     if(this.form.invalid){

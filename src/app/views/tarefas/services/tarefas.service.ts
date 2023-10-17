@@ -1,16 +1,27 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { throwError, Observable, map, catchError } from "rxjs";
+import { FormsTarefaViewModel } from "../models/forms-tarefa.view-model";
+import { Observable, catchError, map, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
-import { FormsDespesaViewModel } from "../models/forms-despesa.view-model";
-import { ListarDespesaViewModel } from "../models/listar-despesa.view-model";
+import { ListarTarefaViewModel } from "../models/listar-tarefas.view-model";
 
-@Injectable ()
+@Injectable()
 
-export class DespesaService{
-  private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/despesas/';
+export class TarefaService{
+  private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/tarefas/';
 
   constructor(private http: HttpClient){}
+
+  private obterHeadersAutorizacao() {
+    const token = environment.apiKey;
+
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }),
+    };
+  }
 
   private processarErroHttp(error: HttpErrorResponse){
     let msgErro = '';
@@ -26,28 +37,17 @@ export class DespesaService{
     }
     return throwError(() => new Error(msgErro));
   }
-
-  private obterHeadersAutorizacao() {
-    const token = environment.apiKey;
-
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
-  }
-
-  public inserir(despesa: any): Observable<FormsDespesaViewModel>{
-    return this.http.post<any>(this.endpoint, despesa, this.obterHeadersAutorizacao())
+  
+  public inserir(tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel>{
+    return this.http.post<any>(this.endpoint,tarefa)
       .pipe(
         map((res) => res.dados),
-        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
-      );
+        catchError((err: HttpErrorResponse) => this.processarErroHttp(err))
+      )
   }
 
-  public editar(id: string, despesa: FormsDespesaViewModel): Observable<FormsDespesaViewModel>{
-    return this.http.put<any>(this.endpoint + id, despesa, this.obterHeadersAutorizacao())
+  public editar(id: string, tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel>{
+    return this.http.put<any>(this.endpoint + id, tarefa, this.obterHeadersAutorizacao())
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -61,7 +61,7 @@ export class DespesaService{
       );
   }
 
-  public selecionarTodos(): Observable<ListarDespesaViewModel[]>{
+  public selecionarTodos(): Observable<ListarTarefaViewModel[]>{
     return this.http
       .get<any>(this.endpoint, this.obterHeadersAutorizacao())
       .pipe(
@@ -70,7 +70,7 @@ export class DespesaService{
       );
   }
 
-  public selecionarPorId(id: string): Observable<FormsDespesaViewModel>{
+  public selecionarPorId(id: string): Observable<FormsTarefaViewModel>{
     return this.http
     .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
     .pipe(

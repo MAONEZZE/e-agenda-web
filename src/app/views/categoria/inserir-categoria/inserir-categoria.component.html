@@ -9,6 +9,7 @@
         <div class="form-group mb-3 position-relative">
           <label class="form-label">Título:</label>
           <input
+            [ngClass]="campoEstaInvalido('titulo')? 'is-invalid' : ''"
             formControlName="titulo"
             class="form-control"
             type="text"

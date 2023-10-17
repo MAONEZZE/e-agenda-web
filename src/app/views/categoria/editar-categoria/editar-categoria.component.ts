@@ -12,7 +12,6 @@ import { CategoriaService } from '../services/categorias.service';
 })
 export class EditarCategoriaComponent implements OnInit{
   form!: FormGroup;
-  categoriaVM!: FormsCategoriaViewModel;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -26,9 +25,15 @@ export class EditarCategoriaComponent implements OnInit{
       titulo: new FormControl('', [Validators.required]),
     });
 
-    this.categoriaVM = this.route.snapshot.data['categoria'];
+    const categoria = this.route.snapshot.data['categoria'];
 
-    this.form.patchValue(this.categoriaVM);
+    this.form.patchValue(categoria);
+  }
+
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
   }
 
   gravar(){
@@ -40,9 +45,7 @@ export class EditarCategoriaComponent implements OnInit{
       return;
     }
     
-    this.categoriaVM = this.form.value;
-    
-    this.categoriaService.inserir(this.categoriaVM).subscribe({
+    this.categoriaService.inserir(this.form.value).subscribe({
       next: (contato: FormsCategoriaViewModel) => this.processarSucesso(contato),
       error: (error: Error) => this.processarFalha(error),
     });

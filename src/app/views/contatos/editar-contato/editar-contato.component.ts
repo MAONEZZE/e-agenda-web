@@ -38,13 +38,20 @@ export class EditarContatoComponent {
     // this.form.setValue({}) O setValue tem que inicializar todos campos, ja o patchValue você pode inicializar só alguns
 
   }
+
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
+  }
   
   gravar(){
     if(this.form.invalid){
-
       for(let item of this.form.validate()){
         this.toastService.error(item);
       }
+
+      return;
     }
 
     this.contatoVM = this.form.value;

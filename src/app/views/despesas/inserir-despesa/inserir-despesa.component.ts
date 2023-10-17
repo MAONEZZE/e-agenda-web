@@ -39,6 +39,12 @@ export class InserirDespesaComponent implements OnInit{
     });
   }
 
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
+  }
+
   gravar(){
     if(this.form.invalid){
       for(let item of this.form.validate()){
@@ -57,7 +63,7 @@ export class InserirDespesaComponent implements OnInit{
 
   processarSucesso(){
     this.toastService.success(`A despesa foi cadastrado com sucesso!`, 'Sucesso');
-    this.router.navigate(['/contatos/listar']);
+    this.router.navigate(['/despesas/listar']);
   }
 
   processarFalha(error: Error){

@@ -11,7 +11,7 @@
 
         <h2 class="fs-5">
           Tem certeza que deseja excluir a despesa
-          <span class="fw-bolder fst-italic">"{{ despesaVM?.descricao }}" </span>
+          <span class="fw-bolder fst-italic">"{{ despesaVM.descricao }}" </span>
         </h2>
       </div>
 
@@ -19,22 +19,22 @@
         <dt class="col-md-4">
           <label class="control-label">Descrição:</label>
         </dt>
-        <dd class="col-md-8">{{ despesaVM?.descricao }}</dd>
+        <dd class="col-md-8">{{ despesaVM.descricao }}</dd>
 
         <dt class="col-md-4">
           <label class="control-label">Data:</label>
         </dt>
-        <dd class="col-md-8">{{ despesaVM?.data | date }}</dd>
+        <dd class="col-md-8">{{ despesaVM.data | date }}</dd>
 
         <dt class="col-md-4">
           <label class="control-label">Forma de Pagamento:</label>
         </dt>
-        <dd class="col-md-8">{{ despesaVM?.formaPagamento }}</dd>
+        <dd class="col-md-8">{{ despesaVM.formaPagamento }}</dd>
 
         <dt class="col-md-4">
           <label class="control-label">Valor:</label>
         </dt>
-        <dd class="col-md-8">{{ despesaVM?.valor }}</dd>
+        <dd class="col-md-8">{{ despesaVM.valor }}</dd>
       </dl>
 
       <div class="card-footer g-grid d-flex gap-1 mt-5">

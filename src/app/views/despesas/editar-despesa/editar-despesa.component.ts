@@ -14,7 +14,6 @@ import { CategoriaService } from '../../categoria/services/categorias.service';
 })
 export class EditarDespesaComponent implements OnInit{
   form!: FormGroup;
-  despesaVM!: FormsDespesaViewModel;
   categorias: ListarCategoriaViewModel[] = [];
   
   constructor(
@@ -35,11 +34,19 @@ export class EditarDespesaComponent implements OnInit{
       categoriasSelecionadas: new FormControl([], [Validators.required]),
     });
 
-    this.despesaVM = this.route.snapshot.data['despesa'];
+    const despesa = this.route.snapshot.data['despesa'];
+
+    this.form.patchValue(despesa);
 
     this.categoriaService.selecionarTodos().subscribe((res) => {
       this.categorias = res;
     });
+  }
+
+  campoEstaInvalido(campo: string): boolean{
+    const estaInvalido: boolean = !this.form.get(campo)!.pristine && this.form.get(campo)!.invalid;
+
+    return estaInvalido;
   }
 
   gravar(){
@@ -51,11 +58,9 @@ export class EditarDespesaComponent implements OnInit{
       return; 
     }
 
-    this.despesaVM = this.form.value;
-
     const id = this.route.snapshot.paramMap.get('id')!;
 
-    this.despesaService.editar(id, this.despesaVM).subscribe({
+    this.despesaService.editar(id, this.form.value).subscribe({
       next: () => this.processarSucesso(),
       error: (err: Error) => this.processarFalha(err)
     })

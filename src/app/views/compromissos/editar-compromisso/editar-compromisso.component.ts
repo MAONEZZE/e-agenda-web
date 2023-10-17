@@ -39,9 +39,9 @@ export class EditarCompromissoComponent implements OnInit{
 
     this.carregarContatos();
 
-    this.compromissoVM = this.route.snapshot.data['compromisso'];
+    const compromisso = this.route.snapshot.data['compromisso'];
 
-    this.form.patchValue(this.compromissoVM!);
+    this.form.patchValue(compromisso);
 
     this.formatarData();
   }
