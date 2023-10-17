@@ -11,12 +11,12 @@ import { TarefaService } from './services/tarefas.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbar, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TarefasRoutingModule } from './tarefas-routing.module';
 
 @NgModule({
   declarations: [InserirTarefaComponent, ListarTarefasComponent, EditarTarefaComponent, ExcluirTarefaComponent, CardComponent],
-  imports: [CommonModule, ReactiveFormsModule, TarefasRoutingModule, RouterModule, NgSelectModule, NgbTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, TarefasRoutingModule, RouterModule, NgSelectModule, NgbTooltipModule, NgbProgressbar],
   providers: [TarefaService]
 })
 export class TarefasModule { }

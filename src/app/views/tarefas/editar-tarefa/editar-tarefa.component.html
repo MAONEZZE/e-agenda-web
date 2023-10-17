@@ -63,12 +63,12 @@
                     type="button"
                     class="btn btn-sm btn-outline-primary me-0 me-md-1 mb-1 mb-md-auto">
 
-                    <i [ngClass]="item.get('concluido')?.value == 2? 'bi-bookmark-dash-fill' : 'bi-bookmark-check-fill'" 
+                    <i [ngClass]="item.get('concluido')?.value == true? 'bi-bookmark-dash-fill' : 'bi-bookmark-check-fill'" 
                     class="bi"></i>
                   </button>
 
                   <button
-                    [ngbTooltip]="item.get('status')?.value == 2? 'Cancelaar Remoção' : 'Remover'"
+                    [ngbTooltip]="item.get('status')?.value == 2? 'Cancelar Remoção' : 'Remover'"
                     (click)="removerItem(i)"
                     type="button"
                     class="btn btn-sm btn-outline-danger me-0 me-md-1 mb-1 mb-md-auto">

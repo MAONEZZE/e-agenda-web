@@ -44,9 +44,10 @@ export class EditarTarefaComponent {
 
     for(let item of tarefa.itens){
       const novoItemGroup = this.formBuilder.group({
+        id: [item.id],
         titulo: [item.titulo],
-        status: [item. status],
-        consluido: [item.concluido]
+        status: [item.status],
+        concluido: [item.concluido]
       });
 
       this.itens.push(novoItemGroup)
@@ -63,7 +64,7 @@ export class EditarTarefaComponent {
     const novoItemGroup = this.formBuilder.group({
       titulo: [item.titulo],
       status: [item. status],
-      consluido: [item.concluido]
+      concluido: [item.concluido]
     });
 
     this.itens.push(novoItemGroup);
@@ -85,6 +86,8 @@ export class EditarTarefaComponent {
     const valorAlterado = !valorAtual;
 
     grupo?.patchValue({ concluido: valorAlterado })
+
+    this.toastService.success('Item concluido', 'Sucesso')
   }
 
   removerItem(i: number){
@@ -98,6 +101,13 @@ export class EditarTarefaComponent {
         : StatusItemTarefa.Removido;
 
     grupo?.patchValue({ status: valorAlterado })
+
+    if(valorAlterado == StatusItemTarefa.Removido){
+      this.toastService.success('Item removido', 'Sucesso')
+    }
+    else{
+      this.toastService.success('Item restaurado', 'Sucesso')
+    }
   }
 
   gravar(){

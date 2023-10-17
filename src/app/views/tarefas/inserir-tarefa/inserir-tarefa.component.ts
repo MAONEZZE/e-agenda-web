@@ -58,6 +58,8 @@ export class InserirTarefaComponent implements OnInit{
 
   removerItem(i: number){
     this.itens.removeAt(i);
+
+    this.toastService.success('Item removido', 'Sucesso')
   }
 
   campoEstaInvalido(campo: string): boolean{

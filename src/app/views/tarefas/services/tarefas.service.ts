@@ -2,18 +2,18 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http
 import { Injectable } from "@angular/core";
 import { FormsTarefaViewModel } from "../models/forms-tarefa.view-model";
 import { Observable, catchError, map, throwError } from "rxjs";
-import { environment } from "src/environments/environment";
 import { ListarTarefaViewModel } from "../models/listar-tarefas.view-model";
+import { LocalStorageService } from "src/app/core/auth/services/local-storage.service";
 
 @Injectable()
 
 export class TarefaService{
   private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/tarefas/';
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private localstorageService: LocalStorageService){}
 
   private obterHeadersAutorizacao() {
-    const token = environment.apiKey;
+    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
 
     return {
       headers: new HttpHeaders({
@@ -39,9 +39,9 @@ export class TarefaService{
   }
   
   public inserir(tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel>{
-    return this.http.post<any>(this.endpoint,tarefa)
+    return this.http.post<any>(this.endpoint, tarefa, this.obterHeadersAutorizacao())
       .pipe(
-        map((res) => res.dados),
+        map((res) => res.dados), 
         catchError((err: HttpErrorResponse) => this.processarErroHttp(err))
       )
   }
@@ -79,7 +79,7 @@ export class TarefaService{
     );
   }
 
-  public selecionarDespesaCompletaPorId(id: string){
+  public selecionarTarefaCompletaPorId(id: string){
     return this.http
     .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
     .pipe(

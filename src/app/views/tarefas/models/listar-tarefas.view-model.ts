@@ -4,4 +4,6 @@ export type ListarTarefaViewModel = {
   dataCriacao: Date;
   prioridade: string;
   situacao: string;
+
+  
 }

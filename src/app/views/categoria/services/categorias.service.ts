@@ -4,13 +4,14 @@ import { throwError, Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { FormsCategoriaViewModel } from "../models/forms-categoria.view-model";
 import { ListarCategoriaViewModel } from "../models/listar-categoria.view-model";
+import { LocalStorageService } from "src/app/core/auth/services/local-storage.service";
 
 @Injectable ()
 
 export class CategoriaService{
   private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/categorias/'
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private localstorageService: LocalStorageService){}
 
   private processarErroHttp(error: HttpErrorResponse){
     let msgErro = '';
@@ -29,7 +30,7 @@ export class CategoriaService{
   }
 
   private obterHeadersAutorizacao() {
-    const token = environment.apiKey;
+    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
 
     return {
       headers: new HttpHeaders({

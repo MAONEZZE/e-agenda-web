@@ -4,13 +4,14 @@ import { throwError, Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { FormsDespesaViewModel } from "../models/forms-despesa.view-model";
 import { ListarDespesaViewModel } from "../models/listar-despesa.view-model";
+import { LocalStorageService } from "src/app/core/auth/services/local-storage.service";
 
 @Injectable ()
 
 export class DespesaService{
   private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/despesas/';
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private localstorageService: LocalStorageService){}
 
   private processarErroHttp(error: HttpErrorResponse){
     let msgErro = '';
@@ -28,7 +29,7 @@ export class DespesaService{
   }
 
   private obterHeadersAutorizacao() {
-    const token = environment.apiKey;
+    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
 
     return {
       headers: new HttpHeaders({

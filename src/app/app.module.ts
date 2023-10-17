@@ -11,6 +11,8 @@ import { CoreModule } from './core/core.module';
 import { ContatosModule } from './views/contatos/contatos.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CompromissosModule } from './views/compromissos/compromissos.module';
+import { RegistroModule } from './views/registro/registro.module';
+import { LoginModule } from './views/login/login.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { CompromissosModule } from './views/compromissos/compromissos.module';
 
     HttpClientModule,
     CoreModule,
+    RegistroModule,
+    LoginModule,
     DashboardModule,
 
     ToastrModule.forRoot({
