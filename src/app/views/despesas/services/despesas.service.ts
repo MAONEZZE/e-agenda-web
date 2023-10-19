@@ -28,19 +28,8 @@ export class DespesaService{
     return throwError(() => new Error(msgErro));
   }
 
-  private obterHeadersAutorizacao() {
-    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
-
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
-  }
-
   public inserir(despesa: any): Observable<FormsDespesaViewModel>{
-    return this.http.post<any>(this.endpoint, despesa, this.obterHeadersAutorizacao())
+    return this.http.post<any>(this.endpoint, despesa)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -48,7 +37,7 @@ export class DespesaService{
   }
 
   public editar(id: string, despesa: FormsDespesaViewModel): Observable<FormsDespesaViewModel>{
-    return this.http.put<any>(this.endpoint + id, despesa, this.obterHeadersAutorizacao())
+    return this.http.put<any>(this.endpoint + id, despesa)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -56,7 +45,7 @@ export class DespesaService{
   }
 
   public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+    return this.http.delete(this.endpoint + id)
       .pipe(
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
@@ -64,7 +53,7 @@ export class DespesaService{
 
   public selecionarTodos(): Observable<ListarDespesaViewModel[]>{
     return this.http
-      .get<any>(this.endpoint, this.obterHeadersAutorizacao())
+      .get<any>(this.endpoint)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -73,7 +62,7 @@ export class DespesaService{
 
   public selecionarPorId(id: string): Observable<FormsDespesaViewModel>{
     return this.http
-    .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -82,7 +71,7 @@ export class DespesaService{
 
   public selecionarDespesaCompletaPorId(id: string){
     return this.http
-    .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + 'visualizacao-completa/' + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))

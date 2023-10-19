@@ -9,16 +9,6 @@ import { TarefaService } from '../services/tarefas.service';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit{
-  @Input() tarefa!: ListarTarefaViewModel;
-  tarefaVM!: VisualizarTarefaViewModel;
-
-  constructor(private tarefaService: TarefaService){}
-  
-  ngOnInit(): void {
-    this.tarefaService.selecionarTarefaCompletaPorId(this.tarefa.id).subscribe((res) => {
-      this.tarefaVM = res;
-      console.log(res.percentualConcluido)
-    })
-  }
+export class CardComponent{
+  @Input() tarefa!: VisualizarTarefaViewModel;
 }

@@ -19,9 +19,9 @@
   </div>
   <div class="card-footer">
     Conclusão dos Itens
-    <ngb-progressbar type="info" [value]="tarefaVM.percentualConcluido" [striped]="true" [animated]="true"><i> {{ tarefaVM.percentualConcluido }}% </i></ngb-progressbar>
+    <ngb-progressbar type="info" [value]="tarefa.percentualConcluido" [striped]="true" [animated]="true"><i> {{ tarefa.percentualConcluido }}% </i></ngb-progressbar>
   </div>
-  <div class="d-flex card-footer bg-transparent justify-content-end gap-2">
+  <div class="d-flex card-footer bg-transparent justify-content-end gap-1">
     <button
       class="btn btn-outline-info"
       routerLink="/tarefas/editar/{{tarefa.id}}"

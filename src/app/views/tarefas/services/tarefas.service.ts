@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormsTarefaViewModel } from "../models/forms-tarefa.view-model";
-import { Observable, catchError, map, throwError } from "rxjs";
+import { Observable, catchError, forkJoin, map, switchMap, throwError } from "rxjs";
 import { ListarTarefaViewModel } from "../models/listar-tarefas.view-model";
 import { LocalStorageService } from "src/app/core/auth/services/local-storage.service";
 
@@ -11,17 +11,6 @@ export class TarefaService{
   private endpoint: string = 'https://e-agenda-web-api.onrender.com/api/tarefas/';
 
   constructor(private http: HttpClient, private localstorageService: LocalStorageService){}
-
-  private obterHeadersAutorizacao() {
-    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
-
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
-  }
 
   private processarErroHttp(error: HttpErrorResponse){
     let msgErro = '';
@@ -39,7 +28,7 @@ export class TarefaService{
   }
   
   public inserir(tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel>{
-    return this.http.post<any>(this.endpoint, tarefa, this.obterHeadersAutorizacao())
+    return this.http.post<any>(this.endpoint, tarefa)
       .pipe(
         map((res) => res.dados), 
         catchError((err: HttpErrorResponse) => this.processarErroHttp(err))
@@ -47,7 +36,7 @@ export class TarefaService{
   }
 
   public editar(id: string, tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel>{
-    return this.http.put<any>(this.endpoint + id, tarefa, this.obterHeadersAutorizacao())
+    return this.http.put<any>(this.endpoint + id, tarefa)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -55,7 +44,7 @@ export class TarefaService{
   }
 
   public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+    return this.http.delete(this.endpoint + id)
       .pipe(
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
@@ -63,16 +52,35 @@ export class TarefaService{
 
   public selecionarTodos(): Observable<ListarTarefaViewModel[]>{
     return this.http
-      .get<any>(this.endpoint, this.obterHeadersAutorizacao())
+      .get<any>(this.endpoint)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
   }
 
+  public selecionarTodosCompletos(){
+    return this.http
+      .get<any>(this.endpoint)
+      .pipe(
+        switchMap((res) => {
+          const observables = []
+
+          for(let item of res.dados){
+            observables.push(this.selecionarTarefaCompletaPorId(item.id));
+          }
+
+          return forkJoin(observables);
+        }),
+
+        catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
+      );
+
+  }
+
   public selecionarPorId(id: string): Observable<FormsTarefaViewModel>{
     return this.http
-    .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -81,7 +89,7 @@ export class TarefaService{
 
   public selecionarTarefaCompletaPorId(id: string){
     return this.http
-    .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + 'visualizacao-completa/' + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))

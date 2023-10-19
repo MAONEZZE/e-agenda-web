@@ -28,19 +28,8 @@ export class CompromissoService{
     return throwError(() => new Error(msgErro))
   }
 
-  private obterHeadersAutorizacao() {
-    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
-
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
-  }
-
   public inserir(compromisso: any): Observable<FormCompromissoViewModel>{
-    return this.http.post<any>(this.endpoint, compromisso, this.obterHeadersAutorizacao())
+    return this.http.post<any>(this.endpoint, compromisso)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -48,7 +37,7 @@ export class CompromissoService{
   }
 
   public editar(id: string, compromisso: FormCompromissoViewModel): Observable<FormCompromissoViewModel>{
-    return this.http.put<any>(this.endpoint + id, compromisso, this.obterHeadersAutorizacao())
+    return this.http.put<any>(this.endpoint + id, compromisso)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -56,7 +45,7 @@ export class CompromissoService{
   }
 
   public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+    return this.http.delete(this.endpoint + id)
       .pipe(
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
@@ -64,7 +53,7 @@ export class CompromissoService{
 
   public selecionarTodos(): Observable<ListarCompromissoViewModel[]>{
     return this.http
-      .get<any>(this.endpoint, this.obterHeadersAutorizacao())
+      .get<any>(this.endpoint)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -73,7 +62,7 @@ export class CompromissoService{
 
   public selecionarPorId(id: string): Observable<FormCompromissoViewModel>{
     return this.http
-    .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -82,7 +71,7 @@ export class CompromissoService{
 
   public selecionarCompromissoCompletoPorId(id: string){
     return this.http
-    .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + 'visualizacao-completa/' + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))

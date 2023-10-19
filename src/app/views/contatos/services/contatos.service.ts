@@ -29,20 +29,9 @@ export class ContatosService{
     return throwError(() => new Error(msgErro))
   }
 
-  private obterHeadersAutorizacao() {
-    const token = this.localstorageService.obterDadosLocaisSalvos()?.chave;
-
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
-  }
-
   public inserir(contato: any): Observable<FormsContatoViewModel>{
     return this.http
-      .post<any>(this.endpoint, contato, this.obterHeadersAutorizacao())
+      .post<any>(this.endpoint, contato)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -50,7 +39,7 @@ export class ContatosService{
   }
 
   public editar(id: string, contato: FormsContatoViewModel){
-    return this.http.put<any>(this.endpoint + id, contato, this.obterHeadersAutorizacao())
+    return this.http.put<any>(this.endpoint + id, contato)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -58,7 +47,7 @@ export class ContatosService{
   }
 
   public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id, this.obterHeadersAutorizacao())
+    return this.http.delete(this.endpoint + id)
       .pipe(
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
@@ -66,7 +55,7 @@ export class ContatosService{
 
   public selecionarTodos(): Observable<ListarContatoViewModel[]>{
     return this.http
-      .get<any>(this.endpoint, this.obterHeadersAutorizacao())
+      .get<any>(this.endpoint)
       .pipe(
         map((res) => res.dados),
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -75,7 +64,7 @@ export class ContatosService{
 
   public selecionarPorId(id: string): Observable<FormsContatoViewModel>{
     return this.http
-    .get<any>(this.endpoint + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
@@ -84,7 +73,7 @@ export class ContatosService{
 
   public selecionarContatoCompletoPorId(id: string){
     return this.http
-    .get<any>(this.endpoint + 'visualizacao-completa/' + id, this.obterHeadersAutorizacao())
+    .get<any>(this.endpoint + 'visualizacao-completa/' + id)
     .pipe(
       map((res) => res.dados),
       catchError((error: HttpErrorResponse) => this.processarErroHttp(error))

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TarefaService } from '../services/tarefas.service';
 import { map } from 'rxjs';
+import { VisualizarTarefaViewModel } from '../models/visualizar-tarefa.view-model';
 
 @Component({
   selector: 'app-listar-tarefas',
@@ -11,7 +12,7 @@ import { map } from 'rxjs';
   styleUrls: ['./listar-tarefas.component.css']
 })
 export class ListarTarefasComponent implements OnInit{
-  tarefas: ListarTarefaViewModel[] = [];
+  tarefas: VisualizarTarefaViewModel[] = [];
 
   constructor(
     private toastService: ToastrService,
@@ -23,9 +24,10 @@ export class ListarTarefasComponent implements OnInit{
       next: (tarefas) => this.processarSucesso(tarefas),
       error: (err) => this.processarFalha(err),
     });
+    
   }
 
-  processarSucesso(tarefas: ListarTarefaViewModel[]){
+  processarSucesso(tarefas: VisualizarTarefaViewModel[]){
     this.tarefas = tarefas;
   }
 

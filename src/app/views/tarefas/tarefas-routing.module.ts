@@ -13,6 +13,10 @@ const listarTarefasResolver: ResolveFn<ListarTarefaViewModel[]> = () => {
   return inject(TarefaService).selecionarTodos();
 }
 
+const listarTarefasCompletasResolver: ResolveFn<VisualizarTarefaViewModel[]> = () => {
+  return inject(TarefaService).selecionarTodosCompletos();
+}
+
 const formsTarefaResolver: ResolveFn<FormsTarefaViewModel> = (route: ActivatedRouteSnapshot) => {
   return inject(TarefaService).selecionarPorId(route.paramMap.get('id')!)
 }
@@ -30,7 +34,7 @@ const routes : Routes =[
   {
     path: 'listar',
     component: ListarTarefasComponent,
-    resolve: { 'tarefas': listarTarefasResolver }
+    resolve: { 'tarefas': listarTarefasCompletasResolver }
   },
   {
     path: 'editar/:id',
