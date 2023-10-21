@@ -41,7 +41,7 @@ export class InserirCompromissoComponent implements OnInit{
   }
 
   carregarContatos(){
-    this.contatoService.selecionarTodos().subscribe((res) => {
+    this.contatoService.selecionarTodos(0).subscribe((res) => {
       this.contatos = res;
     });
   }

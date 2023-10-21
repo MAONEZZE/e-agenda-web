@@ -13,9 +13,14 @@ import { CategoriasRoutingModule } from './categoria-routing.module';
 
 import 'src/app/extensions/form-group.extensions'
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [CardComponent, EditarCategoriaComponent, ExcluirCategoriaComponent, InserirCategoriaComponent, ListarCategoriasComponent],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, CategoriasRoutingModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, CategoriasRoutingModule, MatCardModule, MatButtonModule, MatIconModule, MatDividerModule],
   providers: [CategoriaService]
 })
 export class CategoriaModule { }

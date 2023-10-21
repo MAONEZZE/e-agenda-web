@@ -1,31 +1,24 @@
-<div class="card border-dark mt-5">
-  <div class="card-body">
-    <div class="row justify-content-center">
-      <h3 class="card-title">Titulo: {{ categoria.titulo }}</h3>
-    </div>
-  </div>
-  <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
-    <button
-      class="btn btn-outline-info"
-      routerLink="/categorias/editar/{{categoria.id}}"
-      aria-label="Editar"
-      ngbTooltip="Editar"
-      placement="bottom">
+<mat-card>
+  <mat-card-header class="borda p-2">
+    <mat-card-title>Titulo: {{ categoria.titulo }}</mat-card-title>
+  </mat-card-header>
 
-      <i class="bi bi-pen"></i>
-      
+  <mat-card-actions align="end">
+    <button
+      mat-icon-button 
+      color="primary"
+      routerLink="/categorias/editar/{{categoria.id}}">
+
+      <mat-icon>edit</mat-icon>
     </button>
 
     <button
-      class="btn btn-outline-danger"
-      routerLink="/categorias/excluir/{{categoria.id}}"
-      aria-label="Excluir"
-      ngbTooltip="Excluir"
-      placement="bottom">
+      mat-icon-button 
+      color="primary"
+      routerLink="/categorias/excluir/{{categoria.id}}">
 
-      <i class="bi bi-trash"></i>
-
+      <mat-icon>delete</mat-icon>
     </button>
-  </div>
-</div>
+  </mat-card-actions>
+</mat-card>
 

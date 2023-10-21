@@ -10,16 +10,20 @@ import { ListarContatoViewModel } from "./models/listar-contato.view-model";
 import { VisualizarContatoViewModel } from "./models/visualizar-contato.view-model";
 import { ContatosService } from "./services/contatos.service";
 
+const listarContatosFavResolver = () => {
+  return inject(ContatosService).selecionarTodos(1);
+}
+
 const listarContatosResolver: ResolveFn<ListarContatoViewModel[]> = () => {
-  return inject(ContatosService).selecionarTodos()
+  return inject(ContatosService).selecionarTodos(0);
 }
 
 const formsContatoResolver: ResolveFn<FormsContatoViewModel> = (route: ActivatedRouteSnapshot) => {
-  return inject(ContatosService).selecionarPorId(route.paramMap.get('id')!)
+  return inject(ContatosService).selecionarPorId(route.paramMap.get('id')!);
 }
 
 const visualizarContatoResolver: ResolveFn<VisualizarContatoViewModel> = (route: ActivatedRouteSnapshot) => {
-  return inject(ContatosService).selecionarContatoCompletoPorId(route.paramMap.get('id')!)
+  return inject(ContatosService).selecionarContatoCompletoPorId(route.paramMap.get('id')!);
 } 
 
 const routes: Routes = [
@@ -31,7 +35,10 @@ const routes: Routes = [
   {
     path: 'listar',
     component: ListarContatosComponent,
-    resolve: { contatos: listarContatosResolver }
+    resolve: { 
+      contatos: listarContatosResolver,
+      contatosFav: listarContatosFavResolver
+    }
   },
   {
     path: 'editar/:id',

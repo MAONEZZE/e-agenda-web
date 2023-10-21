@@ -1,46 +1,38 @@
-<div class="card border-dark mt-5">
-  <div class="card-header text-bg-dark">
-    <div class="col">
-      <div class="row">
-        <h3 class="card-title">{{ compromisso.assunto }}</h3>
-      </div>
-      <div class="row">
-        <span class="ms-auto fw-semibold">Data: {{ compromisso.data }}</span>
-      </div>
-    </div>
-  </div>
-  <div class="card-body">
+<mat-card class="mt-4">
+  <mat-card-header class="borda p-2">
+    <mat-card-title>{{ compromisso.assunto }}</mat-card-title>
+    <mat-card-subtitle class="fw-semibold">Marcado para: {{ compromisso.data | date }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="mt-3">
     <div class="d-flex">
       <div class="col-5">
-        <span class="ms-auto fw-semibold text-muted">Inicio: {{ compromisso.horaInicio }}</span>
+        <h4 class="ms-auto fw-semibold text-muted">Inicio: {{ compromisso.horaInicio }}</h4>
       </div>
       <div class="col-5">
-        <span class="ms-auto fw-semibold text-muted">Termino: {{ compromisso.horaTermino }}</span>
+        <h4 class="ms-auto fw-semibold text-muted">Termino: {{ compromisso.horaTermino }}</h4>
       </div>
     </div>
-    <!-- <p class="">Id: {{contato.id}}</p>  -->
-  </div>
-  <div class="d-flex gap-1 justify-content-end card-footer bg-transparent">
-    <button
-      class="btn btn-outline-info"
-      routerLink="/compromissos/editar/{{compromisso.id}}"
-      aria-label="Editar"
-      ngbTooltip="Editar"
-      placement="bottom">
+    <h4 class="ms-auto fw-semibold text-muted">Contato: {{ compromisso.nomeContato }}</h4>
+  </mat-card-content>
 
-      <i class="bi bi-pen"></i>
-      
+  <mat-divider class="mt-3"/>
+
+  <mat-card-actions align="end">
+    <button
+      mat-icon-button 
+      color="primary"
+      routerLink="/compromissos/editar/{{compromisso.id}}">
+
+      <mat-icon>edit</mat-icon>
     </button>
 
     <button
-      class="btn btn-outline-danger"
-      routerLink="/compromissos/excluir/{{compromisso.id}}"
-      aria-label="Excluir"
-      ngbTooltip="Excluir"
-      placement="bottom">
+      mat-icon-button 
+      color="primary"
+      routerLink="/compromissos/excluir/{{compromisso.id}}">
 
-      <i class="bi bi-trash"></i>
-
+      <mat-icon>delete</mat-icon>
     </button>
-  </div>
-</div>
+  </mat-card-actions>
+</mat-card>

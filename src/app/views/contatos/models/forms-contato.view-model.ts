@@ -1,15 +1,10 @@
-export class FormsContatoViewModel{
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  empresa: string;
+import { ContatoBase } from "./contato-base.view-model";
 
-  constructor(nome: string, email: string, telefone: string, cargo: string, empresa: string){
-    this.nome = nome
+export class FormsContatoViewModel extends ContatoBase{
+  email: string;
+
+  constructor(nome: string, email: string, telefone: string, cargo: string, empresa: string, favorito: boolean){
+    super(nome, telefone, cargo, empresa, favorito);
     this.email = email
-    this.telefone = telefone
-    this.cargo = cargo
-    this.empresa = empresa
   }
 }

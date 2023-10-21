@@ -1,17 +1,12 @@
-export class VisualizarContatoViewModel{
-  id: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  empresa: string;
+import { ContatoBase } from "./contato-base.view-model";
 
-  constructor(id: string, nome: string, email: string, telefone: string, cargo: string, empresa: string){
+export class VisualizarContatoViewModel extends ContatoBase{
+  id: string;
+  email: string;
+
+  constructor(id: string, nome: string, email: string, telefone: string, cargo: string, empresa: string, favorito: boolean){
+    super(nome, telefone, cargo, empresa, favorito);
     this.id = id;
-    this.nome = nome
     this.email = email
-    this.telefone = telefone
-    this.cargo = cargo
-    this.empresa = empresa
   }
 }

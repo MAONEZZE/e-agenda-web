@@ -12,9 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ExcluirContatoComponent implements OnInit {
   contatoVM!: VisualizarContatoViewModel;
 
-  constructor(private contatoService: ContatosService, private route: ActivatedRoute, private router: Router, private toastService: ToastrService){
-    this.contatoVM = new VisualizarContatoViewModel('','','','','','');
-  }
+  constructor(private contatoService: ContatosService, private route: ActivatedRoute, private router: Router, private toastService: ToastrService){}
 
   ngOnInit(): void {
     this.contatoVM = this.route.snapshot.data['contato'];

@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 import { AuthService } from '../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +12,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent  implements OnInit{
   estaColapsado: boolean = true;
-
+  estaCarregando$!: Observable<boolean>;
   usuarioEstaLogado$?: Observable<boolean>;
 
-  constructor(private authService: AuthService, private router: Router, private toastService: ToastrService){
-
-  }
+  constructor(private loading: LoadingService ,private authService: AuthService, private router: Router, private toastService: ToastrService){}
   
   ngOnInit(): void {
     this.usuarioEstaLogado$ = this.authService.obterUsuarioAutenticado()
@@ -29,6 +28,8 @@ export class NavbarComponent  implements OnInit{
           return true;
         })
       )
+
+    this.estaCarregando$ = this.loading.estaCarregado();
   }
 
   sair(){

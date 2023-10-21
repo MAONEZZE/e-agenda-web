@@ -15,9 +15,14 @@ import { CategoriaService } from '../categoria/services/categorias.service';
 
 import 'src/app/extensions/form-group.extensions'
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [ListarDespesasComponent, ExcluirDespesaComponent, EditarDespesaComponent, InserirDespesaComponent, CardComponent],
-  imports: [CommonModule, ReactiveFormsModule, DespesasRoutingModule, RouterModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, DespesasRoutingModule, RouterModule, NgSelectModule, MatCardModule, MatButtonModule, MatIconModule, MatDividerModule],
   providers: [DespesaService, CategoriaService]
 })
 export class DespesasModule { }
