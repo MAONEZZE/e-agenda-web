@@ -55,7 +55,7 @@ export class ContatosService{
   }
 
   public excluir(id: string): Observable<any>{
-    return this.http.delete(this.endpoint + id)
+    return this.http.delete(this.endpoint + '/' + id)
       .pipe(
         catchError((error: HttpErrorResponse) => this.processarErroHttp(error))
       );
