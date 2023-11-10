@@ -57,6 +57,7 @@ export class LoginComponent {
   }
 
   processarFalha(error: Error){
+    this.desabilitado = false;
     this.toastService.error(error.message, 'Error');
   }
 }

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { TokenViewModel } from 'src/app/core/auth/models/token.view-model';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { LoadingService } from 'src/app/core/loading/loading.service';
 
@@ -15,6 +14,7 @@ import { LoadingService } from 'src/app/core/loading/loading.service';
 export class RegistroComponent implements OnInit{
   form!: FormGroup;
   estaCarregando$!: Observable<boolean>;
+  desabilitado: boolean = false;
 
   constructor(private loading: LoadingService, private router: Router,private toastService: ToastrService, private formBuilder: FormBuilder, private authService: AuthService){}
 
@@ -43,6 +43,8 @@ export class RegistroComponent implements OnInit{
       return;
     }
 
+    this.desabilitado = true;
+
     this.authService.registrar(this.form.value).subscribe({
       next: (token) => this.processarSucesso(token),
       error: (err) => this.processarFalha(err)
@@ -55,6 +57,7 @@ export class RegistroComponent implements OnInit{
   }
 
   processarFalha(error: Error){
+    this.desabilitado = false;
     this.toastService.error(error.message, 'Error');
   }
 }

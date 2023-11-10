@@ -8,10 +8,12 @@ import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import 'src/app/extensions/form-group.extensions'
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
   declarations: [RegistroComponent],
-  imports: [CommonModule, ReactiveFormsModule, RegistroRoutingModule, RouterModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, RegistroRoutingModule, RouterModule, NgSelectModule, MatButtonModule, MatIconModule],
 })
 export class RegistroModule { }

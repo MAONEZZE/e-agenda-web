@@ -8,7 +8,7 @@
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
         <form [formGroup]="form" (ngSubmit)="login()">
-          <h1 class="text-primary fw-semibold">Login de Usuário</h1>
+          <h1 class="fw-semibold">Login de Usuário</h1>
 
           <div class="form-group my-3 position-relative">
             <label class="form-label" for="email">E-mail</label>
@@ -37,14 +37,14 @@
           </div>
 
           <div class="card-footer g-grid d-flex gap-1 mt-4">
-            <button class="btn btn-primary btn-sm px-3" type="submit" [disabled]="desabilitado">
+            <button mat-raised-button color="primary" class="btn btn-sm px-3" type="submit" [disabled]="desabilitado">
               <span 
               *ngIf="(estaCarregando$ | async)" 
               class="spinner-border spinner-border-sm" 
               role="status" aria-hidden="true"></span>
               
-              <i *ngIf="desabilitado == false" class="bi bi-arrow-right me-2"></i>
-              
+              <mat-icon *ngIf="desabilitado == false" class="me-2">login</mat-icon>
+             
               Entrar
             </button>
           </div>
